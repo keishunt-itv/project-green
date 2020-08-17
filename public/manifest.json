@@ -5,7 +5,7 @@
   "author": "Keisha Hunt",
   "version": "1.0",
   "browser_action": {
-    "default_popup": "popup.html",
+    "default_popup": "index.html",
     "default_title": "Click here!",
     "default_icon": {
       "16": "resources/16.png",
