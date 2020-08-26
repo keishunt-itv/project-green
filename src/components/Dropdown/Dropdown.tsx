@@ -1,30 +1,32 @@
-import React, { ReactElement, useState } from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
 import { useDropDownStyles } from './Dropdown.css';
 import { InfoBox } from '../InfoBox/InfoBox';
+import {fetchAllRegions, fetchCIData} from "../../api/fetchCIData";
 
 function Dropdown(): ReactElement {
     const classes = useDropDownStyles();
-    const regionNames = [
-        'North Scotland',
-        'South Scotland',
-        'North East England',
-        'North West England',
-        'North Wales & Merseyside',
-        'South Wales',
-        'West Midlands',
-        'East Midlands',
-        'South East England',
-        'London',
-        'East England',
-        'South England',
-        'South West England',
-        'Yorkshire'
-    ];
+    // const regionNames = [
+    //     'North Scotland',
+    //     'South Scotland',
+    //     'North East England',
+    //     'North West England',
+    //     'North Wales & Merseyside',
+    //     'South Wales',
+    //     'West Midlands',
+    //     'East Midlands',
+    //     'South East England',
+    //     'London',
+    //     'East England',
+    //     'South England',
+    //     'South West England',
+    //     'Yorkshire'
+    // ];
 
+    const [regionNames, setRegionNames] = useState(['']);
     const [region, setRegion] = useState('');
     const regionNamesMapped = (regionName: string) => (
         <MenuItem key={regionName} value={regionName}>
@@ -37,43 +39,28 @@ function Dropdown(): ReactElement {
     function sortAlphabetically(regionArray : Array<string>) : Array<string> {
         return regionArray.sort((a, b) => a.localeCompare(b));
     }
-    // wanted to do this rather than hardcode but electron was not playing nice
-    // const fetchRegionNames = () => {
-    //   (async () => {
-    //     const regions: Array<string> = [];
-    //     const getRegionNames = await fetchCIData();
-    //     if (getRegionNames) {
-    //       getRegionNames.map((value) => regions.concat(value.region));
-    //     }
-    //   })();
-    // useEffect(() => {
-    //   (async () => {
-    //     try {
-    //       let newRegions: Array<string> = [];
-    //       const regionsApi = await fetchAllRegions();
-    //       if (regionsApi) {
-    //         newRegions.concat(regionsApi.map((value) => value.region));
-    //         console.log(`new regions ... ${newRegions}`)
-    //         setRegionNames(newRegions);
-    //       }
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   })();
-    // });
 
-    //   function fetchRegionNames() {
-    //       (async () => {
-    //         const regions: Array<string> = [];
-    //         const getRegionNames = await fetchCIData();
-    //         if (getRegionNames) {
-    //           getRegionNames.map((value) => regions.concat(value.region));
-    //           setRegionNames(regions)
-    //         }
-    //         return regions
-    //       })()
-    //   }
-    // };
+    // TODO api.regions is returning as undefined weirdly. not sure why because the data is there and mapped
+
+    useEffect(() => {
+        (async () => {
+            try {
+                // const regionsApi = await fetchCIData();
+                const regionsApi = await fetchAllRegions();
+                if (regionsApi) {
+                    debugger;
+                    console.log(regionsApi);
+                    // const newRegions : Array<string> = regionsApi[0].regions.map(( { shortname }) => shortname);
+                    let newRegions : Array<string> = regionsApi.map(( { shortname }) => shortname);
+                    debugger;
+                    console.log(`new regions ... ${newRegions}`);
+                    setRegionNames(newRegions);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    });
 
     return (
         <>
