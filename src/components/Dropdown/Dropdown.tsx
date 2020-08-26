@@ -1,33 +1,20 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
 import { useDropDownStyles } from './Dropdown.css';
 import { InfoBox } from '../InfoBox/InfoBox';
-import {fetchAllRegions, fetchCIData} from "../../api/fetchCIData";
+import { fetchAllRegions } from '../../api/fetchCIData';
+import { ciResponse, mockRegionNames } from '../../mocks/MockCarbonResponse';
+import { CarbonIntensityRegion } from '../../interfaces/CarbonIntensityRegion';
 
 function Dropdown(): ReactElement {
+    const initialRegionData : CarbonIntensityRegion[] = ciResponse;
     const classes = useDropDownStyles();
-    // const regionNames = [
-    //     'North Scotland',
-    //     'South Scotland',
-    //     'North East England',
-    //     'North West England',
-    //     'North Wales & Merseyside',
-    //     'South Wales',
-    //     'West Midlands',
-    //     'East Midlands',
-    //     'South East England',
-    //     'London',
-    //     'East England',
-    //     'South England',
-    //     'South West England',
-    //     'Yorkshire'
-    // ];
-
     const [regionNames, setRegionNames] = useState(['']);
     const [region, setRegion] = useState('');
+    const [regionData, setRegionData] = useState(initialRegionData);
     const regionNamesMapped = (regionName: string) => (
         <MenuItem key={regionName} value={regionName}>
             {regionName}
@@ -36,31 +23,31 @@ function Dropdown(): ReactElement {
     const handleChange = (event: any) => {
         setRegion(event.target.value);
     };
+
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        (async () => {
+            try {
+                const regionsApi = await fetchAllRegions();
+                if (regionsApi) {
+                    const newRegions : Array<string> = regionsApi.map(( { shortname }) => shortname);
+                    setRegionNames(newRegions);
+                    setRegionData(regionsApi);
+                }
+            } catch (error) {
+                setRegionNames(mockRegionNames);
+                throw new Error(error);
+            }
+        })();
+    }, []);
+
     function sortAlphabetically(regionArray : Array<string>) : Array<string> {
         return regionArray.sort((a, b) => a.localeCompare(b));
     }
-
-    // TODO api.regions is returning as undefined weirdly. not sure why because the data is there and mapped
-
-    useEffect(() => {
-        (async () => {
-            try {
-                // const regionsApi = await fetchCIData();
-                const regionsApi = await fetchAllRegions();
-                if (regionsApi) {
-                    debugger;
-                    console.log(regionsApi);
-                    // const newRegions : Array<string> = regionsApi[0].regions.map(( { shortname }) => shortname);
-                    let newRegions : Array<string> = regionsApi.map(( { shortname }) => shortname);
-                    debugger;
-                    console.log(`new regions ... ${newRegions}`);
-                    setRegionNames(newRegions);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        })();
-    });
+    function filterByRegion(regionName : string) : CarbonIntensityRegion {
+        const filteredRegion = regionData.filter(value => value.shortname === regionName);
+        return filteredRegion[0];
+    }
 
     return (
         <>
@@ -80,7 +67,7 @@ function Dropdown(): ReactElement {
             </FormControl>
             <Divider />
             <div>
-                {region.length > 0 ? <InfoBox region={region} intensity="very high" /> : null}
+                {region.length > 0 ? <InfoBox region={region} intensity={filterByRegion(region).intensity.index} /> : null}
             </div>
         </>
     );

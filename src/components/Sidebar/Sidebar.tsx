@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, {ReactElement, useEffect} from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,9 +7,12 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { useStyles } from './Sidebar.css';
 import { Dropdown } from '../Dropdown/Dropdown';
+import {fetchAllRegions} from "../../api/fetchCIData";
+import {useCarbonResponseStateHook} from "../../hooks/CarbonResponseStateHook";
 
 export default function Sidebar() : ReactElement {
     const classes = useStyles();
+    const regionState = useCarbonResponseStateHook();
 
     return (
         <div className={classes.root}>
