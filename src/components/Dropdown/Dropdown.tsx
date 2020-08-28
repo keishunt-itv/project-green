@@ -1,20 +1,21 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
 import { useDropDownStyles } from './Dropdown.css';
 import { InfoBox } from '../InfoBox/InfoBox';
-import { fetchAllRegions } from '../../api/fetchCIData';
-import { ciResponse, mockRegionNames } from '../../mocks/MockCarbonResponse';
-import { CarbonIntensityRegion } from '../../interfaces/CarbonIntensityRegion';
+import { useCarbonResponseStateHook } from '../../hooks/CarbonResponseStateHook';
 
 function Dropdown(): ReactElement {
-    const initialRegionData : CarbonIntensityRegion[] = ciResponse;
     const classes = useDropDownStyles();
-    const [regionNames, setRegionNames] = useState(['']);
-    const [regName, setRegion] = useState('');
-    const [regionData, setRegionData] = useState(initialRegionData);
+    const {
+        state,
+        regionNames,
+        regName,
+        setRegion,
+        handleRegionChange
+    } = useCarbonResponseStateHook();
     const regionNamesMapped = (regionName: string) => (
         <MenuItem key={regionName} value={regionName}>
             {regionName}
@@ -22,31 +23,11 @@ function Dropdown(): ReactElement {
     );
     const handleChange = (event: any) => {
         setRegion(event.target.value);
+        handleRegionChange(event.target.value);
     };
 
-    useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-        (async () => {
-            try {
-                const regionsApi = await fetchAllRegions();
-                if (regionsApi) {
-                    const newRegions : Array<string> = regionsApi.map(( { region }) => region);
-                    setRegionNames(newRegions);
-                    setRegionData(regionsApi);
-                }
-            } catch (error) {
-                setRegionNames(mockRegionNames);
-                throw new Error(error);
-            }
-        })();
-    }, []);
-
-    function sortAlphabetically(regionArray : Array<string>) : Array<string> {
-        return regionArray.sort((a, b) => a.localeCompare(b));
-    }
-    function filterByRegion(regionName : string) : CarbonIntensityRegion {
-        const filteredRegion = regionData.filter(value => value.region === regionName);
-        return filteredRegion[0];
+    function sortAlphabetically(regionNameArray: Array<string>): Array<string> {
+        return regionNameArray.sort((a, b) => a.localeCompare(b));
     }
 
     return (
@@ -60,14 +41,17 @@ function Dropdown(): ReactElement {
                     inputProps={{ 'aria-label': 'Without label' }}
                 >
                     <MenuItem value="" disabled>
-          Select a Region:
+                        Select a Region:
                     </MenuItem>
                     {sortAlphabetically(regionNames).map(regionNamesMapped)}
                 </Select>
             </FormControl>
-            <Divider />
+            <Divider/>
             <div>
-                {regName.length > 0 ? <InfoBox region={regName} intensity={filterByRegion(regName).intensity.index} /> : null}
+                {/* these work in here but not in sidebar... */}
+                {/* {regName.length > 0 ? <InfoBox region={regName} intensity={filterByRegion(regName).intensity.index} /> : null} */}
+                {state.selectedRegion != null ? <InfoBox region={state.selectedRegion?.region}
+                    intensity={state.selectedRegion?.intensity.index}/> : null}
             </div>
         </>
     );
