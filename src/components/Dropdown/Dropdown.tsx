@@ -13,7 +13,7 @@ function Dropdown(): ReactElement {
     const initialRegionData : CarbonIntensityRegion[] = ciResponse;
     const classes = useDropDownStyles();
     const [regionNames, setRegionNames] = useState(['']);
-    const [region, setRegion] = useState('');
+    const [regName, setRegion] = useState('');
     const [regionData, setRegionData] = useState(initialRegionData);
     const regionNamesMapped = (regionName: string) => (
         <MenuItem key={regionName} value={regionName}>
@@ -30,7 +30,7 @@ function Dropdown(): ReactElement {
             try {
                 const regionsApi = await fetchAllRegions();
                 if (regionsApi) {
-                    const newRegions : Array<string> = regionsApi.map(( { shortname }) => shortname);
+                    const newRegions : Array<string> = regionsApi.map(( { region }) => region);
                     setRegionNames(newRegions);
                     setRegionData(regionsApi);
                 }
@@ -45,7 +45,7 @@ function Dropdown(): ReactElement {
         return regionArray.sort((a, b) => a.localeCompare(b));
     }
     function filterByRegion(regionName : string) : CarbonIntensityRegion {
-        const filteredRegion = regionData.filter(value => value.shortname === regionName);
+        const filteredRegion = regionData.filter(value => value.region === regionName);
         return filteredRegion[0];
     }
 
@@ -53,7 +53,7 @@ function Dropdown(): ReactElement {
         <>
             <FormControl className={classes.formControl}>
                 <Select
-                    value={region}
+                    value={regName}
                     onChange={handleChange}
                     displayEmpty
                     className={classes.selectEmpty}
@@ -67,7 +67,7 @@ function Dropdown(): ReactElement {
             </FormControl>
             <Divider />
             <div>
-                {region.length > 0 ? <InfoBox region={region} intensity={filterByRegion(region).intensity.index} /> : null}
+                {regName.length > 0 ? <InfoBox region={regName} intensity={filterByRegion(regName).intensity.index} /> : null}
             </div>
         </>
     );

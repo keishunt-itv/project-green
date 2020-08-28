@@ -15,6 +15,6 @@ export function fetchCIData(): Promise<CarbonIntensityResponse> {
 export async function fetchAllRegions(): Promise<CarbonIntensityRegion[]> {
     let returnedData : CarbonIntensityRegion[] = [];
     const carbonResponse = await fetchCIData();
-    returnedData = carbonResponse[0].regions;
+    returnedData = carbonResponse.regions;
     return returnedData;
 }

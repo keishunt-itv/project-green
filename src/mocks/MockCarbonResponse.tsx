@@ -38,13 +38,13 @@ const coalGenerationMix: GenerationMixEnum = {
 };
 
 const yorkshireRegion: CarbonIntensityRegion = {
-    shortname: 'Yorkshire',
+    region: 'Yorkshire',
     intensity,
     generationmix: [windGenerationMix, solarGenerationMix, coalGenerationMix]
 };
 
 const northScotlandRegion: CarbonIntensityRegion = {
-    shortname: 'North Scotland',
+    region: 'North Scotland',
     intensity,
     generationmix: [windGenerationMix, solarGenerationMix, coalGenerationMix]
 };

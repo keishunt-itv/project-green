@@ -3,7 +3,7 @@ export interface CarbonIntensityResponse {
 }
 
 export interface CarbonIntensityRegion {
-  shortname: string;
+  region: string;
   intensity: IntensityLevelEnum;
   generationmix: GenerationMixEnum[];
 }
