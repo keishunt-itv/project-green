@@ -4,26 +4,18 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
 import { useDropDownStyles } from './Dropdown.css';
-import { InfoBox } from '../InfoBox/InfoBox';
 import { useCarbonResponseStateHook } from '../../hooks/CarbonResponseStateHook';
 
-function Dropdown(): ReactElement {
+function Dropdown({ regName, valueChanged }: { regName: string, valueChanged: (regName: string) => void }): ReactElement {
     const classes = useDropDownStyles();
-    const {
-        state,
-        regionNames,
-        regName,
-        setRegion,
-        handleRegionChange
-    } = useCarbonResponseStateHook();
+    const { regionNames } = useCarbonResponseStateHook();
     const regionNamesMapped = (regionName: string) => (
         <MenuItem key={regionName} value={regionName}>
             {regionName}
         </MenuItem>
     );
     const handleChange = (event: any) => {
-        setRegion(event.target.value);
-        handleRegionChange(event.target.value);
+        valueChanged(event.target.value);
     };
 
     function sortAlphabetically(regionNameArray: Array<string>): Array<string> {
@@ -48,10 +40,6 @@ function Dropdown(): ReactElement {
             </FormControl>
             <Divider/>
             <div>
-                {/* these work in here but not in sidebar... */}
-                {/* {regName.length > 0 ? <InfoBox region={regName} intensity={filterByRegion(regName).intensity.index} /> : null} */}
-                {state.selectedRegion != null ? <InfoBox region={state.selectedRegion?.region}
-                    intensity={state.selectedRegion?.intensity.index}/> : null}
             </div>
         </>
     );

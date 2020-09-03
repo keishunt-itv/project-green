@@ -14,12 +14,11 @@ import { CarbonIntensityRegion } from '../../interfaces/CarbonIntensityRegion';
 export default function Sidebar(): ReactElement {
     const classes = useStyles();
 
-    const { state,
-        regionNames,
+    const {
+        state,
         regionData,
-        regName,
-        setRegion,
-        handleRegionChange } = useCarbonResponseStateHook();
+        handleRegionChange
+    } = useCarbonResponseStateHook();
 
     function filterByRegion(regionName : string) : CarbonIntensityRegion {
         const filteredRegion = regionData.filter(value => value.region === regionName);
@@ -46,9 +45,8 @@ export default function Sidebar(): ReactElement {
             >
                 <div className={classes.toolbar}/>
                 <Divider/>
-                <Dropdown/>
-                {/* {regName.length > 0 ? <InfoBox region={regName} intensity={filterByRegion(regName).intensity.index} /> : null} */}
-                {/* {state.selectedRegion != null ? <InfoBox region={filterByRegion(regName).region} intensity={filterByRegion(regName).intensity.index} /> : null} */}
+                <Dropdown regName={state.selectedRegion.region} valueChanged={handleRegionChange}/>
+                {state.selectedRegion.region.length > 0 ? <InfoBox region={state.selectedRegion.region} intensity={filterByRegion(state.selectedRegion.region).intensity.index} /> : null}
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}/>

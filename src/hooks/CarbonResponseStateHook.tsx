@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchAllRegions } from '../api/fetchCIData';
 import { CarbonResponseState } from '../interfaces/CarbonResponseState';
 import { CarbonIntensityRegion } from '../interfaces/CarbonIntensityRegion';
-import { ciResponse, mockRegionNames } from '../mocks/MockCarbonResponse';
+import {ciResponse, mockRegion, mockRegionNames} from '../mocks/MockCarbonResponse';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const useCarbonResponseStateHook = () => {
@@ -12,7 +12,7 @@ export const useCarbonResponseStateHook = () => {
     const initialValue: CarbonResponseState = {
         loaded: false,
         allRegionData: regionData,
-        selectedRegion: null
+        selectedRegion: mockRegion
     };
     const [state, setState] = useState(initialValue);
     const [regionNames, setRegionNames] = useState(['']);
@@ -20,8 +20,8 @@ export const useCarbonResponseStateHook = () => {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     function handleRegionChange(requestedRegion: string) {
-        if (state.selectedRegion?.region !== requestedRegion) {
-            setState((state: CarbonResponseState) => ({ ...state, selectedRegion: filterRegion(requestedRegion) }));
+        if (state.selectedRegion.region !== requestedRegion) {
+            setState((state: CarbonResponseState) => ({ ...state, selectedRegion: filterRegion(requestedRegion), loaded: true }));
         }
     }
 
@@ -38,8 +38,7 @@ export const useCarbonResponseStateHook = () => {
                 if (regionsApi) {
                     setState((carbonResponseState: CarbonResponseState) => ({
                         ...carbonResponseState,
-                        allRegionData: regionsApi,
-                        loaded: true
+                        allRegionData: regionsApi
                     }));
                     const newRegions: Array<string> = regionsApi.map(({ region }) => region);
                     setRegionNames(newRegions);
