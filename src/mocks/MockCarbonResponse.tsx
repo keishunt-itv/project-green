@@ -43,6 +43,12 @@ const yorkshireRegion: CarbonIntensityRegion = {
     generationmix: [windGenerationMix, solarGenerationMix, coalGenerationMix]
 };
 
+export const mockRegion: CarbonIntensityRegion = {
+    region: '',
+    intensity,
+    generationmix: [windGenerationMix]
+}
+
 const northScotlandRegion: CarbonIntensityRegion = {
     region: 'North Scotland',
     intensity,

@@ -7,10 +7,23 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { useStyles } from './Sidebar.css';
 import { Dropdown } from '../Dropdown/Dropdown';
+import { useCarbonResponseStateHook } from '../../hooks/CarbonResponseStateHook';
+import { InfoBox } from '../InfoBox/InfoBox';
+import { CarbonIntensityRegion } from '../../interfaces/CarbonIntensityRegion';
 
 export default function Sidebar(): ReactElement {
     const classes = useStyles();
-    // const regionState = useCarbonResponseStateHook();
+
+    const {
+        state,
+        regionData,
+        handleRegionChange
+    } = useCarbonResponseStateHook();
+
+    function filterByRegion(regionName : string) : CarbonIntensityRegion {
+        const filteredRegion = regionData.filter(value => value.region === regionName);
+        return filteredRegion[0];
+    }
 
     return (
         <div className={classes.root}>
@@ -32,7 +45,8 @@ export default function Sidebar(): ReactElement {
             >
                 <div className={classes.toolbar}/>
                 <Divider/>
-                <Dropdown/>
+                <Dropdown regName={state.selectedRegion.region} valueChanged={handleRegionChange}/>
+                {state.selectedRegion.region.length > 0 ? <InfoBox region={state.selectedRegion.region} intensity={filterByRegion(state.selectedRegion.region).intensity.index} /> : null}
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}/>
