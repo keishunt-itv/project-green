@@ -10,6 +10,7 @@ import { Dropdown } from '../Dropdown/Dropdown';
 import { useCarbonResponseStateHook } from '../../hooks/CarbonResponseStateHook';
 import { InfoBox } from '../InfoBox/InfoBox';
 import { CarbonIntensityRegion } from '../../interfaces/CarbonIntensityRegion';
+import { DonutChart } from '../DonutChart/DonutChart';
 
 export default function Sidebar(): ReactElement {
     const classes = useStyles();
@@ -50,9 +51,7 @@ export default function Sidebar(): ReactElement {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}/>
-                <Typography paragraph>Pie Chart will go here</Typography>
-                <Typography paragraph>Bar graph will go here</Typography>
-                <Typography paragraph>Regional Map will go here</Typography>
+                {state.selectedRegion.region.length > 0 ? <DonutChart region={state.selectedRegion}/> : null}
             </main>
         </div>
     );
