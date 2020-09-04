@@ -24,5 +24,11 @@ export const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
             backgroundColor: theme.palette.background.default,
             padding: theme.spacing(3)
+        },
+        logo: {
+            height: '100px',
+            width: '100px',
+            marginLeft: 'auto',
+            marginRight: 'auto'
         }
     }));

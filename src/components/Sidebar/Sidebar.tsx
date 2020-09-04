@@ -1,9 +1,6 @@
 import React, { ReactElement } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { useStyles } from './Sidebar.css';
 import { Dropdown } from '../Dropdown/Dropdown';
@@ -11,6 +8,8 @@ import { useCarbonResponseStateHook } from '../../hooks/CarbonResponseStateHook'
 import { InfoBox } from '../InfoBox/InfoBox';
 import { CarbonIntensityRegion } from '../../interfaces/CarbonIntensityRegion';
 import { DonutChart } from '../DonutChart/DonutChart';
+import { IntensityDisplay } from '../IntensityDisplay/IntensityDisplay';
+import  projectGreenLogo from '../../resources/images/energy.png';
 
 export default function Sidebar(): ReactElement {
     const classes = useStyles();
@@ -29,13 +28,6 @@ export default function Sidebar(): ReactElement {
     return (
         <div className={classes.root}>
             <CssBaseline/>
-            <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap>
-                        Project Green
-                    </Typography>
-                </Toolbar>
-            </AppBar>
             <Drawer
                 className={classes.drawer}
                 variant="permanent"
@@ -45,8 +37,10 @@ export default function Sidebar(): ReactElement {
                 anchor="left"
             >
                 <div className={classes.toolbar}/>
+                <img src={projectGreenLogo} alt="project-green-logo" className={classes.logo}/>
                 <Divider/>
                 <Dropdown regName={state.selectedRegion.region} valueChanged={handleRegionChange}/>
+                {state.selectedRegion.region.length > 0 ? <IntensityDisplay intensity={filterByRegion(state.selectedRegion.region).intensity.index} /> : null}
                 {state.selectedRegion.region.length > 0 ? <InfoBox region={state.selectedRegion.region} intensity={filterByRegion(state.selectedRegion.region).intensity.index} /> : null}
             </Drawer>
             <main className={classes.content}>
