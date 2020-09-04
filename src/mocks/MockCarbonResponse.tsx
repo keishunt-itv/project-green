@@ -40,19 +40,19 @@ const coalGenerationMix: GenerationMixEnum = {
 const yorkshireRegion: CarbonIntensityRegion = {
     region: 'Yorkshire',
     intensity,
-    generationmix: [windGenerationMix, solarGenerationMix, coalGenerationMix]
+    generationMix: [windGenerationMix, solarGenerationMix, coalGenerationMix]
 };
 
 export const mockRegion: CarbonIntensityRegion = {
     region: '',
     intensity,
-    generationmix: [windGenerationMix]
+    generationMix: [windGenerationMix, coalGenerationMix, solarGenerationMix]
 }
 
 const northScotlandRegion: CarbonIntensityRegion = {
     region: 'North Scotland',
     intensity,
-    generationmix: [windGenerationMix, solarGenerationMix, coalGenerationMix]
+    generationMix: [windGenerationMix, solarGenerationMix, coalGenerationMix]
 };
 
 export const ciResponse: Array<CarbonIntensityRegion> = [

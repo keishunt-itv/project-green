@@ -10,6 +10,7 @@ import { Dropdown } from '../Dropdown/Dropdown';
 import { useCarbonResponseStateHook } from '../../hooks/CarbonResponseStateHook';
 import { InfoBox } from '../InfoBox/InfoBox';
 import { CarbonIntensityRegion } from '../../interfaces/CarbonIntensityRegion';
+import { PieChart } from '../PieChart/PieChart';
 
 export default function Sidebar(): ReactElement {
     const classes = useStyles();
@@ -50,7 +51,7 @@ export default function Sidebar(): ReactElement {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}/>
-                <Typography paragraph>Pie Chart will go here</Typography>
+                {state.selectedRegion.region.length > 0 ? <PieChart region={state.selectedRegion}/> : null}
                 <Typography paragraph>Bar graph will go here</Typography>
                 <Typography paragraph>Regional Map will go here</Typography>
             </main>
