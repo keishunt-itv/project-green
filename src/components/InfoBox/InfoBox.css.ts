@@ -2,15 +2,6 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() =>
     createStyles({
-        highIcon: {
-            color: 'red'
-        },
-        lowIcon: {
-            color: 'green'
-        },
-        moderateIcon: {
-            color: 'orange'
-        },
         highBox: {
             backgroundImage: 'linear-gradient(MistyRose, #d1a8a3)',
             borderRadius: '25px',
