@@ -45,7 +45,8 @@ export default function Sidebar(): ReactElement {
                         <Divider/>
                         <InfoBox region={state.selectedRegion.region} intensity={filterByRegion(state.selectedRegion.region).intensity.index} />
                     </div> :
-                    null}
+                    <Divider/>
+                }
             </Drawer>
             <main className={classes.content}>
                 {state.selectedRegion.region.length > 0 ? <DonutChart region={state.selectedRegion}/> : null}

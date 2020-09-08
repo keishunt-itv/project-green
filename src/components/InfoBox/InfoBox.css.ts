@@ -12,21 +12,21 @@ export const useStyles = makeStyles(() =>
             color: 'orange'
         },
         highBox: {
-            backgroundColor: '#fcd7d7',
+            backgroundImage: 'linear-gradient(MistyRose, #d1a8a3)',
             borderRadius: '25px',
             border: '2px solid #cf928f',
             padding: '2px',
             marginTop: '5px'
         },
         lowBox: {
-            backgroundColor: '#ebfcd9',
+            backgroundImage: 'linear-gradient(Honeydew, LightGreen)',
             borderRadius: '25px',
             border: '2px solid #80bd85',
             padding: '2px',
             marginTop: '5px'
         },
         moderateBox: {
-            backgroundColor: '#fff0d1',
+            backgroundImage: 'linear-gradient(antiquewhite, Moccasin)',
             borderRadius: '25px',
             border: '2px solid #e6c585',
             padding: '2px',
