@@ -36,15 +36,18 @@ export default function Sidebar(): ReactElement {
                 }}
                 anchor="left"
             >
-                <div className={classes.toolbar}/>
                 <img src={projectGreenLogo} alt="project-green-logo" className={classes.logo}/>
                 <Divider/>
                 <Dropdown regName={state.selectedRegion.region} valueChanged={handleRegionChange}/>
-                {state.selectedRegion.region.length > 0 ? <IntensityDisplay intensity={filterByRegion(state.selectedRegion.region).intensity.index} /> : null}
-                {state.selectedRegion.region.length > 0 ? <InfoBox region={state.selectedRegion.region} intensity={filterByRegion(state.selectedRegion.region).intensity.index} /> : null}
+                {state.selectedRegion.region.length > 0 ?
+                    <div className={classes.infoDisplay}>
+                        <IntensityDisplay intensity={filterByRegion(state.selectedRegion.region).intensity.index} />
+                        <Divider/>
+                        <InfoBox region={state.selectedRegion.region} intensity={filterByRegion(state.selectedRegion.region).intensity.index} />
+                    </div> :
+                    null}
             </Drawer>
             <main className={classes.content}>
-                <div className={classes.toolbar}/>
                 {state.selectedRegion.region.length > 0 ? <DonutChart region={state.selectedRegion}/> : null}
             </main>
         </div>

@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { fetchAllRegions } from '../api/fetchCIData';
 import { CarbonResponseState } from '../interfaces/CarbonResponseState';
 import { CarbonIntensityRegion } from '../interfaces/CarbonIntensityRegion';
-import {ciResponse, mockRegion, mockRegionNames} from '../mocks/MockCarbonResponse';
+import { ciResponse, mockRegion, mockRegionNames } from '../mocks/MockCarbonResponse';
+import { dynamicIcon } from '../../public/content';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const useCarbonResponseStateHook = () => {
@@ -22,6 +23,7 @@ export const useCarbonResponseStateHook = () => {
     function handleRegionChange(requestedRegion: string) {
         if (state.selectedRegion.region !== requestedRegion) {
             setState((state: CarbonResponseState) => ({ ...state, selectedRegion: filterRegion(requestedRegion), loaded: true }));
+            // dynamicIcon(filterRegion(requestedRegion).intensity);
         }
     }
 
